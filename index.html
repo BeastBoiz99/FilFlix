@@ -1,406 +1,557 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FilFlix</title>
-  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/babel-standalone@7.22.5/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilFlix - Watch TV Shows Online, Watch Movies Online</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --red: #e50914;
+            --dark-red: #b20710;
+            --black: #000000;
+            --white: #ffffff;
+            --gray: #303030;
+            --light-gray: #757575;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--black);
+            color: var(--white);
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+            position: absolute;
+            top: 0;
+            width: 100%;
+            z-index: 10;
+            padding: 20px 50px;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            height: 45px;
+            color: var(--red);
+            font-size: 2rem;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .language-selector {
+            background-color: transparent;
+            color: var(--white);
+            border: 1px solid var(--light-gray);
+            padding: 5px 10px;
+            border-radius: 3px;
+            margin-right: 20px;
+        }
+
+        .sign-in-btn {
+            background-color: var(--red);
+            color: var(--white);
+            border: none;
+            padding: 7px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('https://assets.nflxext.com/ffe/siteui/vlv3/9d3533b2-0e2b-40b2-95e0-ecd7979cc88b/a3873901-5b7c-46eb-b9fa-12fea5197bd3/PK-en-20240311-popsignuptwoweeks-perspective_alpha_website_large.jpg') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+            color: var(--white);
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero h2 {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .email-signup {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .email-signup input {
+            flex: 1;
+            padding: 15px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 2px 0 0 2px;
+        }
+
+        .email-signup button {
+            background-color: var(--red);
+            color: var(--white);
+            border: none;
+            padding: 0 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            border-radius: 0 2px 2px 0;
+            cursor: pointer;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 50px 10%;
+            border-top: 8px solid var(--gray);
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 50px 0;
+        }
+
+        .feature-text {
+            flex: 1;
+            padding: 0 50px;
+        }
+
+        .feature h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .feature p {
+            font-size: 1.5rem;
+        }
+
+        .feature-img {
+            flex: 1;
+            position: relative;
+        }
+
+        .feature-img img {
+            width: 100%;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* FAQ Section */
+        .faq {
+            padding: 50px 10%;
+            border-top: 8px solid var(--gray);
+            text-align: center;
+        }
+
+        .faq h2 {
+            font-size: 3rem;
+            margin-bottom: 40px;
+        }
+
+        .accordion {
+            max-width: 800px;
+            margin: 0 auto 50px;
+        }
+
+        .accordion-item {
+            margin-bottom: 10px;
+        }
+
+        .accordion-question {
+            background-color: var(--gray);
+            color: var(--white);
+            padding: 20px;
+            font-size: 1.5rem;
+            text-align: left;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .accordion-question::after {
+            content: '+';
+            position: absolute;
+            right: 20px;
+            font-size: 2rem;
+        }
+
+        .accordion-question.active::after {
+            content: '×';
+        }
+
+        .accordion-answer {
+            background-color: var(--gray);
+            color: var(--white);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            text-align: left;
+        }
+
+        .accordion-answer-content {
+            padding: 20px;
+            font-size: 1.5rem;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--black);
+            color: var(--light-gray);
+            padding: 50px 10% 20px;
+            border-top: 8px solid var(--gray);
+        }
+
+        .footer-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .footer-top p {
+            margin-bottom: 30px;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .footer-links a {
+            color: var(--light-gray);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .language-selector-footer {
+            margin-bottom: 30px;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            header {
+                padding: 20px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero h2 {
+                font-size: 1.2rem;
+            }
+
+            .email-signup {
+                flex-direction: column;
+            }
+
+            .email-signup input {
+                border-radius: 2px;
+                margin-bottom: 10px;
+            }
+
+            .email-signup button {
+                border-radius: 2px;
+                padding: 10px;
+                font-size: 1rem;
+            }
+
+            .feature {
+                flex-direction: column;
+            }
+
+            .feature.reverse {
+                flex-direction: column-reverse;
+            }
+
+            .feature-text {
+                padding: 20px 0;
+                text-align: center;
+            }
+
+            .feature h2 {
+                font-size: 2rem;
+            }
+
+            .feature p {
+                font-size: 1.2rem;
+            }
+
+            .faq h2 {
+                font-size: 2rem;
+            }
+
+            .accordion-question {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
 </head>
-<body class="bg-black text-white">
-  <div id="root"></div>
-  <script type="text/babel">
-    const { useState, useEffect } = React;
-
-    // Mock movie data
-    const movies = [
-      { id: 1, title: "The Night Agent", description: "An FBI agent uncovers a conspiracy.", genre: "Action", image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1925&auto=format&fit=crop", video: "https://www.youtube.com/embed/abc123" },
-      { id: 2, title: "Stranger Things", description: "A group of friends face supernatural forces.", genre: "Sci-Fi", image: "https://images.unsplash.com/photo-1624705009727-259d19e6a9b8?q=80&w=2070&auto=format&fit=crop", video: "https://www.youtube.com/embed/xyz456" },
-      { id: 3, title: "The Crown", description: "The reign of Queen Elizabeth II.", genre: "Drama", image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=2070&auto=format&fit=crop", video: "https://www.youtube.com/embed/123abc" },
-      { id: 4, title: "Money Heist", description: "A criminal mastermind plans a heist.", genre: "Thriller", image: "https://images.unsplash.com/photo-1579547945413-497e2514d9ea?q=80&w=2071&auto=format&fit=crop", video: "https://www.youtube.com/embed/456xyz" },
-    ];
-
-    // Navbar Component
-    const Navbar = ({ setShowLogin, setShowSignup }) => {
-      return (
-        <nav class="fixed top-0 w-full bg-black bg-opacity-70 z-50 p-4">
-          <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-3xl font-bold text-red-600">FilFlix</h1>
-            <div class="flex space-x-4">
-              <button onClick={() => setShowLogin(true)} class="bg-red-600 px-4 py-2 rounded hover:bg-red-700">Login</button>
-              <button onClick={() => setShowSignup(true)} class="bg-gray-600 px-4 py-2 rounded hover:bg-gray-700">Sign Up</button>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">FilFlix</div>
+            <div class="nav-right">
+                <select class="language-selector">
+                    <option value="en">English</option>
+                    <option value="ur">اردو</option>
+                </select>
+                <button class="sign-in-btn">Sign In</button>
             </div>
-          </div>
-        </nav>
-      );
-    };
-
-    // Hero Banner Component
-    const HeroBanner = () => {
-      return (
-        <div class="relative h-[60vh] bg-cover bg-center" style={{ backgroundImage: `url(${movies[0].image})` }}>
-          <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-start p-8 md:p-16">
-            <h1 class="text-4xl md:text-6xl font-bold">{movies[0].title}</h1>
-            <p class="text-lg md:text-xl mt-4 max-w-md">{movies[0].description}</p>
-            <button class="mt-6 bg-red-600 px-6 py-3 rounded hover:bg-red-700">Watch Now</button>
-          </div>
         </div>
-      );
-    };
+    </header>
 
-    // Movie Card Component
-    const MovieCard = ({ movie, setSelectedMovie }) => {
-      return (
-        <div onClick={() => setSelectedMovie(movie)} class="min-w-[200px] cursor-pointer transform hover:scale-105 transition-transform duration-300">
-          <img src={movie.image} alt={movie.title} class="w-full h-48 object-cover rounded" />
-          <h3 class="mt-2 text-sm font-semibold">{movie.title}</h3>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Unlimited movies, TV shows, and more</h1>
+            <h2>Watch anywhere. Cancel anytime.</h2>
+            <p>Ready to watch? Enter your email to create or restart your membership.</p>
+            <div class="email-signup">
+                <input type="email" placeholder="Email address">
+                <button>Get Started <i class="fas fa-chevron-right"></i></button>
+            </div>
         </div>
-      );
-    };
+    </section>
 
-    // Horizontal Scroll Section Component
-    const MovieSection = ({ title, movies, setSelectedMovie }) => {
-      return (
-        <div class="my-8 px-4">
-          <h2 class="text-2xl font-bold mb-4">{title}</h2>
-          <div class="flex overflow-x-auto space-x-4 scrollbar-hide">
-            {movies.map(movie => (
-              <MovieCard key={movie.id} movie={movie} setSelectedMovie={setSelectedMovie} />
-            ))}
-          </div>
+    <!-- Features Section -->
+    <section class="features">
+        <div class="feature">
+            <div class="feature-text">
+                <h2>Enjoy on your TV</h2>
+                <p>Watch on Smart TVs, Playstation, Xbox, Chromecast, Apple TV, Blu-ray players, and more.</p>
+            </div>
+            <div class="feature-img">
+                <img src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/tv.png" alt="TV">
+            </div>
         </div>
-      );
-    };
 
-    // Movie Detail Page Component
-    const MovieDetail = ({ movie, setSelectedMovie }) => {
-      return (
-        <div class="min-h-screen p-8">
-          <button onClick={() => setSelectedMovie(null)} class="mb-4 text-red-600 hover:underline">Back to Home</button>
-          <div class="flex flex-col md:flex-row gap-8">
-            <img src={movie.image} alt={movie.title} class="w-full md:w-1/3 rounded" />
-            <div>
-              <h1 class="text-3xl font-bold">{movie.title}</h1>
-              <p class="text-lg mt-2">Genre: {movie.genre}</p>
-              <p class="mt-4">{movie.description}</p>
-              <a href={movie.video} target="_blank" class="mt-6 inline-block bg-red-600 px-6 py-3 rounded hover:bg-red-700">Watch Trailer</a>
+        <div class="feature reverse">
+            <div class="feature-img">
+                <img src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/mobile-0819.jpg" alt="Mobile">
             </div>
-          </div>
+            <div class="feature-text">
+                <h2>Download your shows to watch offline</h2>
+                <p>Save your favorites easily and always have something to watch.</p>
+            </div>
         </div>
-      );
-    };
 
-    // Login Page Component
-    const LoginPage = ({ setShowLogin }) => {
-      return (
-        <div class="min-h-screen flex items-center justify-center bg-black bg-opacity-80">
-          <div class="bg-gray-900 p-8 rounded-lg w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6">Login</h2>
-            <div class="mb-4">
-              <label class="block text-sm mb-2">Email</label>
-              <input type="email" class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-600" placeholder="Enter your email" />
+        <div class="feature">
+            <div class="feature-text">
+                <h2>Watch everywhere</h2>
+                <p>Stream unlimited movies and TV shows on your phone, tablet, laptop, and TV.</p>
             </div>
-            <div class="mb-6">
-              <label class="block text-sm mb-2">Password</label>
-              <input type="password" class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-600" placeholder="Enter your password" />
+            <div class="feature-img">
+                <img src="https://assets.nflxext.com/ffe/siteui/acquisition/ourStory/fuji/desktop/device-pile.png" alt="Devices">
             </div>
-            <button class="w-full bg-red-600 py-2 rounded hover:bg-red-700">Login</button>
-            <p class="mt-4 text-center">
-              New to FilFlix? <button onClick={() => setShowLogin(false)} class="text-red-600 hoverunderline">Sign Up</button>
-            </p>
-          </div>
         </div>
-      );
-    };
 
-    // Signup Page Component
-    const SignupPage = ({ setShowSignup }) => {
-      return (
-        <div class="min-h-screen flex items-center justify-center bg-black bg-opacity-80">
-          <div class="bg-gray-900 p-8 rounded-lg w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6">Sign Up</h2>
-            <div class="mb-4">
-              <label class="block text-sm mb-2">Name</label>
-              <input type="text" class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-600" placeholder="Enter your name" />
+        <div class="feature reverse">
+            <div class="feature-img">
+                <img src="https://occ-0-325-395.1.nflxso.net/dnm/api/v6/19OhWN2dO19C9txTON9tvTFtefw/AAAABejKYujIIDQciqmGJJ8BtXkYKKTi5jiqexltvN1YmvXYIfX8B9CYwooUSIzOKneblRFthZAFsYLMgKMyNfeHwk16DmEkpIIcb6A3.png?r=f55" alt="Kids">
             </div>
-            <div class="mb-4">
-              <label class="block text-sm mb-2">Email</label>
-              <input type="email" class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-600" placeholder="Enter your email" />
+            <div class="feature-text">
+                <h2>Create profiles for kids</h2>
+                <p>Send kids on adventures with their favorite characters in a space made just for them—free with your membership.</p>
             </div>
-            <div class="mb-6">
-              <label class="block text-sm mb-2">Password</label>
-              <input type="password" class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-600" placeholder="Enter your password" />
-            </div>
-            <button class="w-full bg-red-600 py-2 rounded hover:bg-red-700">Sign Up</button>
-            <p class="mt-4 text-center">
-              Already have an account? <button onClick={() => setShowSignup(false)} class="text-red-600 hover:underline">Login</button>
-            </p>
-          </div>
         </div>
-      );
-    };
+    </section>
 
-    // Main App Component
-    const App = () => {
-      const [selectedMovie, setSelectedMovie] = useState(null);
-      const [showLogin, setShowLogin] = useState(false);
-      const [showSignup, setShowSignup] = useState(false);
-      const [searchTerm, setSearchTerm] = useState("");
-      const [selectedGenre, setSelectedGenre] = useState("All");
-
-      const genres = ["All", ...new Set(movies.map(movie => movie.genre))];
-      const filteredMovies = movies.filter(movie =>
-        movie.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (selectedGenre === "All" || movie.genre === selectedGenre)
-      );
-
-      return (
-        <div>
-          {showLogin ? (
-            <LoginPage setShowLogin={setShowLogin} />
-          ) : showSignup ? (
-            <SignupPage setShowSignup={setShowSignup} />
-          ) : selectedMovie ? (
-            <MovieDetail movie={selectedMovie} setSelectedMovie={setSelectedMovie} />
-          ) : (
-            <div>
-              <Navbar setShowLogin={setShowLogin} setShowSignup={setShowSignup} />
-              <div class="pt-16">
-                <HeroBanner />
-                <div class="container mx-auto">
-                  <div class="my-8 px-4 flex flex-col md:flex-row gap-4">
-                    <input
-                      type="text"
-                      placeholder="Search movies..."
-                      class="p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-600"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    <select
-                      class="p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-600"
-                      value={selectedGenre}
-                      onChange={(e) => setSelectedGenre(e.target.value)}
-–
-
-System: I notice the response was cut off. I'll complete the FilFlix web application, ensuring the entire React code is included, maintaining the same artifact_id since this is a continuation of the previous artifact. The remaining code will include the genre filter dropdown, movie sections, and complete the App component, while keeping the UI sleek, responsive, and Netflix-inspired.
-
-<xaiArtifact artifact_id="c7995175-d54f-44ad-901d-6cccc9659e96" artifact_version_id="72d51a09-f2c0-44d4-bed7-0ae0b847d337" title="index.html" contentType="text/html">
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FilFlix</title>
-  <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/babel-standalone@7.22.5/babel.min.js"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    .scrollbar-hide::-webkit-scrollbar {
-      display: none;
-    }
-    .scrollbar-hide {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-  </style>
-</head>
-<body class="bg-black text-white">
-  <div id="root"></div>
-  <script type="text/babel">
-    const { useState, useEffect } = React;
-
-    // Mock movie data
-    const movies = [
-      { id: 1, title: "The Night Agent", description: "An FBI agent uncovers a conspiracy.", genre: "Action", image: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?q=80&w=1925&auto=format&fit=crop", video: "https://www.youtube.com/embed/abc123" },
-      { id: 2, title: "Stranger Things", description: "A group of friends face supernatural forces.", genre: "Sci-Fi", image: "https://images.unsplash.com/photo-1624705009727-259d19e6a9b8?q=80&w=2070&auto=format&fit=crop", video: "https://www.youtube.com/embed/xyz456" },
-      { id: 3, title: "The Crown", description: "The reign of Queen Elizabeth II.", genre: "Drama", image: "https://images.unsplash.com/photo-1516321497487-e288fb19713f?q=80&w=2070&auto=format&fit=crop", video: "https://www.youtube.com/embed/123abc" },
-      { id: 4, title: "Money Heist", description: "A criminal mastermind plans a heist.", genre: "Thriller", image: "https://images.unsplash.com/photo-1579547945413-497e2514d9ea?q=80&w=2071&auto=format&fit=crop", video: "https://www.youtube.com/embed/456xyz" },
-      { id: 5, title: "Breaking Bad", description: "A chemistry teacher turns to crime.", genre: "Drama", image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop", video: "https://www.youtube.com/embed/789def" },
-      { id: 6, title: "The Witcher", description: "A monster hunter's epic journey.", genre: "Fantasy", image: "https://images.unsplash.com/photo-1606663889134-b1dedb5ed188?q=80&w=2070&auto=format&fit=crop", video: "https://www.youtube.com/embed/ghi012" },
-    ];
-
-    // Navbar Component
-    const Navbar = ({ setShowLogin, setShowSignup }) => {
-      return (
-        <nav class="fixed top-0 w-full bg-black bg-opacity-70 z-50 p-4">
-          <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-3xl font-bold text-red-600">FilFlix</h1>
-            <div class="flex space-x-4">
-              <button onClick={() => setShowLogin(true)} class="bg-red-600 px-4 py-2 rounded hover:bg-red-700">Login</button>
-              <button onClick={() => setShowSignup(true)} class="bg-gray-600 px-4 py-2 rounded hover:bg-gray-700">Sign Up</button>
-            </div>
-          </div>
-        </nav>
-      );
-    };
-
-    // Hero Banner Component
-    const HeroBanner = () => {
-      return (
-        <div class="relative h-[60vh] bg-cover bg-center" style={{ backgroundImage: `url(${movies[0].image})` }}>
-          <div class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-start p-8 md:p-16">
-            <h1 class="text-4xl md:text-6xl font-bold">{movies[0].title}</h1>
-            <p class="text-lg md:text-xl mt-4 max-w-md">{movies[0].description}</p>
-            <button class="mt-6 bg-red-600 px-6 py-3 rounded hover:bg-red-700">Watch Now</button>
-          </div>
-        </div>
-      );
-    };
-
-    // Movie Card Component
-    const MovieCard = ({ movie, setSelectedMovie }) => {
-      return (
-        <div onClick={() => setSelectedMovie(movie)} class="min-w-[200px] cursor-pointer transform hover:scale-105 transition-transform duration-300">
-          <img src={movie.image} alt={movie.title} class="w-full h-48 object-cover rounded" />
-          <h3 class="mt-2 text-sm font-semibold">{movie.title}</h3>
-        </div>
-      );
-    };
-
-    // Horizontal Scroll Section Component
-    const MovieSection = ({ title, movies, setSelectedMovie }) => {
-      return (
-        <div class="my-8 px-4">
-          <h2 class="text-2xl font-bold mb-4">{title}</h2>
-          <div class="flex overflow-x-auto space-x-4 scrollbar-hide">
-            {movies.map(movie => (
-              <MovieCard key={movie.id} movie={movie} setSelectedMovie={setSelectedMovie} />
-            ))}
-          </div>
-        </div>
-      );
-    };
-
-    // Movie Detail Page Component
-    const MovieDetail = ({ movie, setSelectedMovie }) => {
-      return (
-        <div class="min-h-screen p-8">
-          <button onClick={() => setSelectedMovie(null)} class="mb-4 text-red-600 hover:underline">Back to Home</button>
-          <div class="flex flex-col md:flex-row gap-8">
-            <img src={movie.image} alt={movie.title} class="w-full md:w-1/3 rounded" />
-            <div>
-              <h1 class="text-3xl font-bold">{movie.title}</h1>
-              <p class="text-lg mt-2">Genre: {movie.genre}</p>
-              <p class="mt-4">{movie.description}</p>
-              <a href={movie.video} target="_blank" class="mt-6 inline-block bg-red-600 px-6 py-3 rounded hover:bg-red-700">Watch Trailer</a>
-            </div>
-          </div>
-        </div>
-      );
-    };
-
-    // Login Page Component
-    const LoginPage = ({ setShowLogin }) => {
-      return (
-        <div class="min-h-screen flex items-center justify-center bg-black bg-opacity-80">
-          <div class="bg-gray-900 p-8 rounded-lg w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6">Login</h2>
-            <div class="mb-4">
-              <label class="block text-sm mb-2">Email</label>
-              <input type="email" class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-600" placeholder="Enter your email" />
-            </div>
-            <div class="mb-6">
-              <label class="block text-sm mb-2">Password</label>
-              <input type="password" class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-600" placeholder="Enter your password" />
-            </div>
-            <button class="w-full bg-red-600 py-2 rounded hover:bg-red-700">Login</button>
-            <p class="mt-4 text-center">
-              New to FilFlix? <button onClick={() => setShowLogin(false)} class="text-red-600 hover:underline">Sign Up</button>
-            </p>
-          </div>
-        </div>
-      );
-    };
-
-    // Signup Page Component
-    const SignupPage = ({ setShowSignup }) => {
-      return (
-        <div class="min-h-screen flex items-center justify-center bg-black bg-opacity-80">
-          <div class="bg-gray-900 p-8 rounded-lg w-full max-w-md">
-            <h2 class="text-2xl font-bold mb-6">Sign Up</h2>
-            <div class="mb-4">
-              <label class="block text-sm mb-2">Name</label>
-              <input type="text" class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-600" placeholder="Enter your name" />
-            </div>
-            <div class="mb-4">
-              <label class="block text-sm mb-2">Email</label>
-              <input type="email" class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-600" placeholder="Enter your email" />
-            </div>
-            <div class="mb-6">
-              <label class="block text-sm mb-2">Password</label>
-              <input type="password" class="w-full p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-600" placeholder="Enter your password" />
-            </div>
-            <button class="w-full bg-red-600 py-2 rounded hover:bg-red-700">Sign Up</button>
-            <p class="mt-4 text-center">
-              Already have an account? <button onClick={() => setShowSignup(false)} class="text-red-600 hover:underline">Login</button>
-            </p>
-          </div>
-        </div>
-      );
-    };
-
-    // Main App Component
-    const App = () => {
-      const [selectedMovie, setSelectedMovie] = useState(null);
-      const [showLogin, setShowLogin] = useState(false);
-      const [showSignup, setShowSignup] = useState(false);
-      const [searchTerm, setSearchTerm] = useState("");
-      const [selectedGenre, setSelectedGenre] = useState("All");
-
-      const genres = ["All", ...new Set(movies.map(movie => movie.genre))];
-      const filteredMovies = movies.filter(movie =>
-        movie.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (selectedGenre === "All" || movie.genre === selectedGenre)
-      );
-
-      return (
-        <div>
-          {showLogin ? (
-            <LoginPage setShowLogin={setShowLogin} />
-          ) : showSignup ? (
-            <SignupPage setShowSignup={setShowSignup} />
-          ) : selectedMovie ? (
-            <MovieDetail movie={selectedMovie} setSelectedMovie={setSelectedMovie} />
-          ) : (
-            <div>
-              <Navbar setShowLogin={setShowLogin} setShowSignup={setShowSignup} />
-              <div class="pt-16">
-                <HeroBanner />
-                <div class="container mx-auto">
-                  <div class="my-8 px-4 flex flex-col md:flex-row gap-4">
-                    <input
-                      type="text"
-                      placeholder="Search movies..."
-                      class="p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-600 w-full md:w-1/2"
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    <select
-                      class="p-2 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:border-red-600 w-full md:w-1/4"
-                      value={selectedGenre}
-                      onChange={(e) => setSelectedGenre(e.target.value)}
-                    >
-                      {genres.map(genre => (
-                        <option key={genre} value={genre}>{genre}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <MovieSection title="Trending Now" movies={filteredMovies} setSelectedMovie={setSelectedMovie} />
-                  <MovieSection title="Top Picks" movies={filteredMovies.slice(0, 4)} setSelectedMovie={setSelectedMovie} />
-                  <MovieSection title="New Releases" movies={filteredMovies.slice(2)} setSelectedMovie={setSelectedMovie} />
+    <!-- FAQ Section -->
+    <section class="faq">
+        <h2>Frequently Asked Questions</h2>
+        <div class="accordion">
+            <div class="accordion-item">
+                <div class="accordion-question">What is FilFlix?</div>
+                <div class="accordion-answer">
+                    <div class="accordion-answer-content">
+                        FilFlix is a streaming service that offers a wide variety of award-winning TV shows, movies, anime, documentaries, and more on thousands of internet-connected devices.
+                        <br><br>
+                        You can watch as much as you want, whenever you want without a single commercial – all for free. There's always something new to discover and new TV shows and movies are added every week!
+                    </div>
                 </div>
-              </div>
             </div>
-          )}
+            <div class="accordion-item">
+                <div class="accordion-question">How much does FilFlix cost?</div>
+                <div class="accordion-answer">
+                    <div class="accordion-answer-content">
+                        Watch FilFlix on your smartphone, tablet, Smart TV, laptop, or streaming device, all for free with no hidden charges.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-question">Where can I watch?</div>
+                <div class="accordion-answer">
+                    <div class="accordion-answer-content">
+                        Watch anywhere, anytime. Sign in with your FilFlix account to watch instantly on the web at filflix.com from your personal computer or on any internet-connected device that offers the FilFlix app.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-question">How do I cancel?</div>
+                <div class="accordion-answer">
+                    <div class="accordion-answer-content">
+                        FilFlix is flexible. You can cancel your account online in two clicks. There are no cancellation fees – start or stop your account anytime.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-question">What can I watch on FilFlix?</div>
+                <div class="accordion-answer">
+                    <div class="accordion-answer-content">
+                        FilFlix has an extensive library of feature films, documentaries, TV shows, anime, award-winning FilFlix originals, and more. Watch as much as you want, anytime you want.
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <div class="accordion-question">Is FilFlix good for kids?</div>
+                <div class="accordion-answer">
+                    <div class="accordion-answer-content">
+                        The FilFlix Kids experience is included in your account to give parents control while kids enjoy family-friendly TV shows and movies in their own space.
+                        <br><br>
+                        Kids profiles come with PIN-protected parental controls that let you restrict the maturity rating of content kids can watch and block specific titles you don't want kids to see.
+                    </div>
+                </div>
+            </div>
         </div>
-      );
-    };
 
-    // Render the app
-    ReactDOM.render(<App />, document.getElementById('root'));
-  </script>
+        <p>Ready to watch? Enter your email to create or restart your membership.</p>
+        <div class="email-signup">
+            <input type="email" placeholder="Email address">
+            <button>Get Started <i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-top">
+                <p>Questions? Call 000-800-040-1843</p>
+            </div>
+            <div class="footer-links">
+                <a href="#">FAQ</a>
+                <a href="#">Help Center</a>
+                <a href="#">Account</a>
+                <a href="#">Media Center</a>
+                <a href="#">Investor Relations</a>
+                <a href="#">Jobs</a>
+                <a href="#">Ways to Watch</a>
+                <a href="#">Terms of Use</a>
+                <a href="#">Privacy</a>
+                <a href="#">Cookie Preferences</a>
+                <a href="#">Corporate Information</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Speed Test</a>
+                <a href="#">Legal Notices</a>
+                <a href="#">Only on FilFlix</a>
+            </div>
+            <div class="language-selector-footer">
+                <select class="language-selector">
+                    <option value="en">English</option>
+                    <option value="ur">اردو</option>
+                </select>
+            </div>
+            <div class="copyright">
+                <p>FilFlix Pakistan</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Accordion functionality
+        document.querySelectorAll('.accordion-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const isActive = question.classList.contains('active');
+                
+                // Close all other accordion items
+                document.querySelectorAll('.accordion-question').forEach(q => {
+                    if (q !== question) {
+                        q.classList.remove('active');
+                        q.nextElementSibling.style.maxHeight = null;
+                    }
+                });
+                
+                // Toggle current item
+                if (isActive) {
+                    question.classList.remove('active');
+                    answer.style.maxHeight = null;
+                } else {
+                    question.classList.add('active');
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                }
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Email signup button functionality
+        document.querySelectorAll('.email-signup button').forEach(button => {
+            button.addEventListener('click', () => {
+                const emailInput = button.parentElement.querySelector('input');
+                const email = emailInput.value;
+                if (email.includes('@') && email.includes('.')) {
+                    alert('Thank you for signing up for FilFlix! We will contact you soon.');
+                    emailInput.value = '';
+                } else {
+                    alert('Please enter a valid email address.');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
